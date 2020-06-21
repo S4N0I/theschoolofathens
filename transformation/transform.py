@@ -66,8 +66,9 @@ def build_graph_json(data, scores):
         graph_json_item = {'id': item['pageid'], 'score': item['score']}
         graph_json['nodes'].append(graph_json_item)
         for influence in item['influences']:
-            graph_json_edge = {'source': item['pageid'], 'target': influence['pageid'], 'value': 1}
-            graph_json['links'].append(graph_json_edge)
+            if int(influence['pageid']) in node_map:
+                graph_json_edge = {'source': item['pageid'], 'target': influence['pageid'], 'value': 1}
+                graph_json['links'].append(graph_json_edge)
 
     return graph_json
 
