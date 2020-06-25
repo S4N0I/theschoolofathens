@@ -48,6 +48,7 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
     var nodes = {};
     var i;
     for (i = 0; i < graph.nodes.length; i++) {
+        initNode(graph.nodes[i], parentWidth, parentHeight)
         nodes[graph.nodes[i].id] = graph.nodes[i];
         graph.nodes[i].weight = 1.01;
     }
@@ -97,14 +98,12 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
         .force("link", d3v4.forceLink()
                 .id(function(d) { return d.id; })
                 .distance(function(d) { 
-                    return 30;
+                    return 100;
                     //var dist = 20 / d.value;
                     //console.log('dist:', dist);
-
-                    return dist; 
                 })
               )
-        .force("charge", d3v4.forceManyBody())
+        .force("charge", d3v4.forceManyBody().distanceMin(100).strength(-2000))
         .force("center", d3v4.forceCenter(parentWidth / 2, parentHeight / 2))
         .force("x", d3v4.forceX(parentWidth/2))
         .force("y", d3v4.forceY(parentHeight/2));

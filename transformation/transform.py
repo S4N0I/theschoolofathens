@@ -27,7 +27,7 @@ def transform(data):
 
 
 def clean(data):
-    filtered = list(filter(filter_item, data))
+    filtered = list(filter(filter_with_born_bound, data))
     for item in filtered:
         item['influences'] = list(filter(filter_item, item['influences']))
         item['influenced'] = list(filter(filter_item, item['influenced']))
@@ -42,6 +42,9 @@ def build_node_map(data):
 
 def filter_item(item):
     return item['name'] is not None and item['pageid'] is not None
+
+def filter_with_born_bound(item):
+    return filter_item(item) and item['born'] is not None and item['born'] >= -1000000000000
 
 
 def build_graph(data):
@@ -63,7 +66,7 @@ def build_graph_json(data, scores):
         node_map[pageid]['score'] = score
     
     for item in data:
-        graph_json_item = {'id': item['pageid'], 'score': item['score']}
+        graph_json_item = {'id': item['pageid'], 'score': item['score'], 'name': item['name'], 'born': item['born'], 'img': item['img']}
         graph_json['nodes'].append(graph_json_item)
         for influence in item['influences']:
             if int(influence['pageid']) in node_map:
