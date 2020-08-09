@@ -31,7 +31,44 @@ def clean(data):
     for item in filtered:
         item['influences'] = list(filter(filter_item, item['influences']))
         item['influenced'] = list(filter(filter_item, item['influenced']))
+        handle_born_corner_cases(item)
     return filtered
+
+
+def handle_born_corner_cases(item):
+    if 'Mikhail Bakhtin' in item['name']:
+        item['born'] = -2366755200
+    if 'Adolf von Harnack' in item['name']:
+        item['born'] = -3755289600
+    if 'Nicolai Hartmann' in item['name']:
+        item['born'] = -2776982400
+    if 'Richard Hooker' in item['name']:
+        item['born'] = -13127702400
+    if 'David Hume' in item['name']:
+        print('ya gone')
+        item['born'] = -8173267200
+    if 'Hermann Graf von Keyserling' in item['name']:
+        item['born'] = -2840140800
+    if 'Salomon Maimon' in item['name']:
+        item['born'] = -6847804800
+    if 'Maimonides' in item['name']:
+        item['born'] = -26350099200
+    if 'Wilhelm Ostwald' in item['name']:
+        item['born'] = -3692131200
+    if 'Ioane Petritsi' in item['name']:
+        item['born'] = -30610224000
+    if 'Petar II Petrović-Njegoš' in item['name']:
+        item['born'] = -4954435200
+    if 'Joseph Priestley' in item['name']:
+        item['born'] = -7478956800
+    if 'Vasily Rozanov' in item['name']:
+        item['born'] = -3597523200
+    if 'Adam Smith' in item['name']:
+        item['born'] = -7794576000
+    if 'Frederick Robert Tennant' in item['name']:
+        item['born'] = -3281904000
+    if 'Udayana' in item['name']:
+        item['born'] = -33765897600
 
 
 def build_node_map(data):
@@ -82,5 +119,6 @@ if len(sys.argv) < 2:
 with open(sys.argv[1], "r") as input_file:
     data = json.load(input_file)
     transformed = transform(data)
-    with open("transformed.json", "w") as output_file:
+    with open("transformed.js", "w") as output_file:
+        output_file.write('var graph = ')
         json.dump(transformed, output_file)
