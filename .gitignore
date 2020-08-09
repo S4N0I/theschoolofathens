@@ -130,3 +130,6 @@ dmypy.json
 
 # IDE files
 .idea/
+
+# Mac Finder
+.DS_Store
