@@ -1,0 +1,53 @@
+.graph-background {
+    fill: #fcfcfc;
+}
+
+.y-axis text {
+    fill: #555;
+    font-family: "Helvetica", "Arial", sans-serif;
+    font-size : 16px
+}
+
+.y-axis line {
+    stroke: #ccc
+}
+
+.y-axis path {
+    stroke: #ccc
+}
+
+#bottom_sheet {
+    max-height: 40%;
+    background-color: #ccccccaa;
+    box-shadow: none;
+}
+
+.modal-overlay {
+    pointer-events: none;
+}
+
+.modal-content {
+    display: grid;
+    grid-template-columns: 48% 48%;
+    grid-template-rows: 100%;
+    column-gap: 4%;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+#philosopherImg {
+    justify-self: end;
+    max-height: 100%;
+}
+
+#philosopherDescription {
+    max-width: 60%;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: center;
+    background-color: transparent !important;
+    border-top: none !important;
+    pointer-events: all;
+}

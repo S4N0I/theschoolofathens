@@ -4,13 +4,13 @@
     <link rel='stylesheet' href='d3v4-selectable-zoomable-force-directed-graph.css'>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css'>
     <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel='stylesheet' href='style.css'>
+    <link rel='stylesheet' href='switch.css'>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="../visualize/transformed.js"></script>
     <script src="util.js"></script>
-    <script src="d3v4-brush-lite.js"></script>
     <script src="d3v4-selectable-force-directed-graph.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.3/ace.js"></script>
+    <script src="https://d3js.org/d3-selection-multi.v0.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
 </head>
@@ -18,85 +18,52 @@
 <body>
 
 <div id="container">
-    <!-- Modal Trigger -->
-    <a id="modal-button" class="waves-effect waves-light btn" href="#bottom_sheet">Hack it!</a>
-    <div class="help-tip">
-        <p>Click on a node and pull to see what's attached to it.<br> Use SHIFT for selecting multiple nodes. Scroll to
-            zoom in and out.</p>
-    </div>
-    <div align='center' id="d3_selectable_force_directed_graph">
+    <div id="d3_selectable_force_directed_graph">
         <svg/>
     </div>
+</div>
+
+<div class="switch-container">
+  <label class="switch">
+    <input id="clipToTimelineCheckbox" type="checkbox" checked  onclick="onClickClipToTimeline()">
+    <span class="slider round">
+    </span>
+  </label>
+  <p>Clip to timeline</p>
 </div>
 
 <!-- Modal Structure -->
 <div id="bottom_sheet" class="modal bottom-sheet modal-fixed-footer">
     <div id="modalContent" class="modal-content">
-        <div id="editor">/* From here you can transform the graph at will, play with colors or break the entire page.
-The graph object looks like this:
-
-var graph = {
-    nodes: [
-        {id: "packagename.ClassName1", score: 42},
-        {id: "packagename.ClassName2", score: 24, color: "#08ac9c"},  // the color property is optional
-        ...
-    ],
-    links: [
-        {source: "packagename.ClassName1", target: "packagename.ClassName2", value: 1},
-        ...
-    ]
-}
-
-The following code paints all nodes which contain the string "red" red:
-*/
-
-graph.nodes.forEach(function(node) {
-    if(node.id.includes("red")) {
-        node.color = "#f92222"
-    }
-})
-</div>
+        <img id="philosopherImg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Anaxagoras_Lebiedzki_Rahl.jpg/220px-Anaxagoras_Lebiedzki_Rahl.jpg">
+        <div id="philosopherBio">
+            <a id="philosopherName" target="_blank"></a>
+            <p id="philosopherDescription"></p>
+        </div>
     </div>
     <div class="modal-footer">
-        <a id="runButton" class="waves-effect modal-close waves-green btn-flat">Run!</a>
-        <a id="closeButton" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+        <a id="closeButton" class="btn-floating waves-effect waves-light blue modal-action modal-close"><i class="material-icons">close</i></a>
     </div>
 </div>
 
 <script>
     $('.modal').modal({
-            dismissible: true,
-            opacity: .5,
-            inDuration: 300,
+            dismissible: false,
+            preventScrolling: false,
+            opacity: .0,
+            inDuration: 500,
             outDuration: 200,
-            startingTop: '4%',
-            endingTop: '10%'
+            startingTop: '50%',
+            endingTop: '50%'
         }
     );
 </script>
 
 <script>
-    $('#runButton').on('click', function () {
-        var editor = ace.edit("editor")
-        var userCode = editor.getValue();
-        var script = document.createElement('script');
-        try {
-            script.appendChild(document.createTextNode(userCode));
-            document.body.appendChild(script);
-        } catch (e) {
-            script.text = userCode;
-            document.body.appendChild(script);
-        }
-        createV4SelectableForceDirectedGraph(svg, graph);
-    });
-</script>
-
-<script>
-    var svg = d3.select('#d3_selectable_force_directed_graph');
-    createV4SelectableForceDirectedGraph(svg, graph);
-
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/javascript");
+    var graphContainer = document.getElementById("d3_selectable_force_directed_graph")
+    for (var i = 0; i < graph.nodes.length; i++) {
+        initNode(graph.nodes[i], graphContainer.clientWidth, graphContainer.clientHeight)
+    }
+    createV4SelectableForceDirectedGraph(graph, graphContainer.clientWidth, graphContainer.clientHeight);
 </script>
 </body>

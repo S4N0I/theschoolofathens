@@ -5,24 +5,20 @@ function initNode(node, parentWidth, parentHeight) {
 }
 
 function applyScale(node, bornScale) {
-    node.score = node.score * 10000
+    node.score = node.score * 50000
 }
 
+var now = Date.now()
+var deltaTo2k = now / (1000 * 3600 * 24 * 365) + 1970 - 2000;
+
 function normalizeBorn(born) {
-    var now = Date.now()
+    // todo make less hacky
     var delta = (now / 1000) - born
-    return delta / (3600 * 24 * 365)
+    return delta / (3600 * 24 * 365) - deltaTo2k
 }
 
 function fixY(node, bornScale, parentWidth, parentHeight) {
+    // todo maybe move to dragstarted for better intuition
+    node.savedFy = bornScale
     node.fy = bornScale
 }
-
-/*
-graph.nodes.forEach(function(node) {
-    if(node.born >= -62167219200 && node.born <= -61157376000) {
-        console.log(node)
-    }
-    node.score = node.score/10000
-})
-*/
