@@ -32,6 +32,7 @@ def clean(data):
         item['influences'] = list(filter(filter_item, item['influences']))
         item['influenced'] = list(filter(filter_item, item['influenced']))
         handle_born_corner_cases(item)
+        handle_name_corner_cases(item)
     return filtered
 
 
@@ -45,7 +46,6 @@ def handle_born_corner_cases(item):
     if 'Richard Hooker' in item['name']:
         item['born'] = -13127702400
     if 'David Hume' in item['name']:
-        print('ya gone')
         item['born'] = -8173267200
     if 'Hermann Graf von Keyserling' in item['name']:
         item['born'] = -2840140800
@@ -69,6 +69,16 @@ def handle_born_corner_cases(item):
         item['born'] = -3281904000
     if 'Udayana' in item['name']:
         item['born'] = -33765897600
+
+def handle_name_corner_cases(item):
+    if item['pageid'] == '1254755':
+        item['name'] = 'Abdolkarim Soroush'
+    if item['pageid'] == '16340':
+        item['name'] = 'Jean-Paul Sartre'
+    if item['pageid'] == '251240':
+        item['name'] = 'Emil Cioran'
+    if item['pageid'] == '59041318':
+        item['name'] = 'August Wilhelm Rehberg'
 
 
 def build_node_map(data):
