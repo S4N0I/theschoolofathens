@@ -9,8 +9,7 @@ body {
 }
 
 .node .selected {
-    stroke: #0930de;
-    fill: orange;
+    fill: rgb(255, 166, 0);
 }
 
 .link {
@@ -18,11 +17,11 @@ body {
 }
 
 .link .influences {
-    stroke: #de9a09;
+    stroke: rgb(255, 166, 0);
 }
 
 .link .influenced-by {
-    stroke: #1e8a0b;
+    stroke: #2af806;
 }
 
 #container {

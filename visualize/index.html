@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <head>
+    <title>theschoolofathens</title>
+    <meta name="description" content="An influence network of philosophers with PageRank scores, scraped from Wikipedia and visualized with d3.js">
+    <meta name="author" content="s4n0i">
     <meta charset="utf-8"/>
-    <link rel='stylesheet' href='d3v4-selectable-zoomable-force-directed-graph.css'>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css'>
     <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
-    <link rel='stylesheet' href='style.css'>
-    <link rel='stylesheet' href='switch.css'>
+    <link rel='stylesheet' href='css/graph.css'>
+    <link rel='stylesheet' href='css/style.css'>
+    <link rel='stylesheet' href='css/switch.css'>
+    <link rel='stylesheet' href='css/search.css'>
     <script src="https://d3js.org/d3.v4.js"></script>
-    <script src="../visualize/transformed.js"></script>
-    <script src="util.js"></script>
-    <script src="d3v4-selectable-force-directed-graph.js"></script>
+    <script src="js/graph-data.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/d3-graph.js"></script>
     <script src="https://d3js.org/d3-selection-multi.v0.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
@@ -35,7 +39,7 @@
 <!-- Modal Structure -->
 <div id="bottom_sheet" class="modal bottom-sheet modal-fixed-footer">
     <div id="modalContent" class="modal-content">
-        <img id="philosopherImg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Anaxagoras_Lebiedzki_Rahl.jpg/220px-Anaxagoras_Lebiedzki_Rahl.jpg">
+        <img id="philosopherImg">
         <div id="philosopherBio">
             <a id="philosopherName" target="_blank"></a>
             <p id="philosopherDescription"></p>
