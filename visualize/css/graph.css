@@ -9,7 +9,11 @@ body {
 }
 
 .node .selected {
-    fill: rgb(255, 166, 0);
+    fill: rgb(255, 166, 0) !important;
+}
+
+.node .search-match {
+    fill: red;
 }
 
 .link {

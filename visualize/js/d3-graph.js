@@ -236,3 +236,14 @@ function onClickClipToTimeline() {
     var checkBox = document.getElementById("clipToTimelineCheckbox");
     clipNodesToTimeline(checkBox.checked);
 }
+
+function searchByName() {
+    var searchTerm = document.getElementById("search").value;
+    if(searchTerm.length == 0) {
+        node.classed("search-match", false);
+        return;
+    };
+    node.classed("search-match", function(n){
+        return n.name.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+}
