@@ -10,6 +10,7 @@
     <link rel='stylesheet' href='css/style.css'>
     <link rel='stylesheet' href='css/switch.css'>
     <link rel='stylesheet' href='css/search.css'>
+    <link rel='stylesheet' href='css/help.css'>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="js/graph-data.js"></script>
     <script src="js/util.js"></script>
@@ -38,6 +39,43 @@
 
 <div class="search-container">
     <input id="search" type="search" placeholder="Search" onkeyup="searchByName()">
+</div>
+
+<div class="help-container">
+    <div class="help-tip">
+        <div>
+            <p>Each node represents a philosopher. Nodes are linked if one philosopher was an influence to the other.
+                The size of a node represents the overall influence of a philosopher on the network.<br/>
+                <br/>
+                Click on a philosopher's node to get more info about them. You can also interact with the graph by dragging nodes, panning and zooming.
+            </p>
+            <p id="legendHeader">Legend</p>
+            <div class="legend-row">
+                <div id="regular-node" class="node-symbol"></div>
+                <p>regular node</p>
+            </div>
+            <div class="legend-row">
+                <div id="selected-node" class="node-symbol"></div>
+                <p>currently selected node</p>
+            </div>
+            <div class="legend-row">
+                <div id="search-match-node" class="node-symbol"></div>
+                <p>node matched by search</p>
+            </div>
+            <div class="legend-row">
+                <div id="regular-link" class="link-symbol"></div>
+                <p>regular link</p>
+            </div>
+            <div class="legend-row">
+                <div id="influences-link" class="link-symbol"></div>
+                <p>influenced by selected node</p>
+            </div>
+            <div class="legend-row">
+                <div id="influenced-by-link" class="link-symbol"></div>
+                <p>influence on the selected node</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Modal Structure -->

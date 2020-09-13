@@ -28,7 +28,7 @@ function createV4SelectableForceDirectedGraph(graph, parentWidth, parentHeight) 
     .attr('width', parentWidth)
     .attr('height', parentHeight)
 
-    var initYScale = 0.12
+    var initYScale = 0.12;
     var initXTransform = parentWidth / 2 - 100; // best guess for now
     var initYTransform = parentHeight / 3;
     var gDraw = gMain.append('g')
