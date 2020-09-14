@@ -11,11 +11,11 @@ var simulation = null;
 var selectedNode = null;
 var clippingToTimeline = true;
 
-function createV4SelectableForceDirectedGraph(graph, parentWidth, parentHeight) {
+function createD3Graph(graph, parentWidth, parentHeight) {
 
     var svg = d3v4.select('svg')
-    .attr('width', parentWidth)
-    .attr('height', parentHeight)
+    .attr('width', '100%')
+    .attr('height', '100%')
 
     // remove any previous graphs
     svg.selectAll('.g-main').remove();
@@ -23,32 +23,26 @@ function createV4SelectableForceDirectedGraph(graph, parentWidth, parentHeight) 
     var gMain = svg.append('g')
     .classed('g-main', true)
 
+    // add background
     var rect = gMain.append('rect')
     .classed('graph-background', true)
-    .attr('width', parentWidth)
-    .attr('height', parentHeight)
+    .attr('width', '100%')
+    .attr('height', '100%')
 
-    var initYScale = 0.12;
-    var initXTransform = parentWidth / 2 - 100; // best guess for now
+    // add graph
+    var graphWidthEstimate = 11600
+    var initScale = Math.max(parentWidth, parentHeight) / (graphWidthEstimate * 1.2);
+    var initXTransform = parentWidth / 2 - initScale * 800;
     var initYTransform = parentHeight / 3;
     var gDraw = gMain.append('g')
-    .attr("transform","translate("+ initXTransform + ", " + initYTransform + ") scale(" + initYScale + ")");
+    .attr("transform","translate("+ initXTransform + ", " + initYTransform + ") scale(" + initScale + ")");
 
-    // Add Y axis
+    // add Y axis
     var yScale = d3v4.scaleLinear()
     .domain([parentHeight - 96, 96])
     .range([parentHeight - 96, 96]);
 
-    var yAxis = d3v4.axisLeft(yScale)
-    .ticks(10)
-    .tickFormat(function(d) {
-        var yearsAd = Math.floor(2000 - d);
-        if(yearsAd > 0) {
-            return yearsAd + "";
-        } else {
-            return yearsAd + " BC"
-        }
-    });
+    var yAxis = createYAxis(yScale)
     
     yAxisG = gMain.append("g")
     .classed('y-axis', true)
@@ -56,35 +50,26 @@ function createV4SelectableForceDirectedGraph(graph, parentWidth, parentHeight) 
     .attr("transform",
     "translate(" + (parentWidth * 0.08 + 38) + "," + 0 + ")");
 
+    // Add zoom callback
     var zoom = d3v4.zoom()
     .on('zoom', zoomed);
 
-    gMain.call(zoom).call(zoom.transform, d3v4.zoomIdentity.translate(initXTransform, initYTransform).scale(initYScale));
-
+    gMain.call(zoom).call(zoom.transform, d3v4.zoomIdentity.translate(initXTransform, initYTransform).scale(initScale));
 
     function zoomed() {
         gDraw.attr('transform', d3v4.event.transform);
-
-        // recover the new scale
-        var newY = d3v4.event.transform.rescaleY(yScale);
-        // update axes with these new boundaries
-        yAxisG.call(d3v4.axisLeft(newY)
-        .ticks(10)
-        .tickFormat(function(d) {
-            var yearsAd = Math.floor(2000 - d);
-            if(yearsAd >= 0) {
-                return yearsAd + "";
-            } else {
-                return Math.abs(yearsAd) + " BC"
-            }
-        }))
+        var newYScale = d3v4.event.transform.rescaleY(yScale);
+        yAxisG.call(createYAxis(newYScale))
     }
 
-    var nodes = {};
-    for (var i = 0; i < graph.nodes.length; i++) {
-        nodes[graph.nodes[i].id] = graph.nodes[i];
-    }
+    // Add resize callback
+    window.addEventListener('resize', function() {
+        var graphContainer = document.getElementById("d3_selectable_force_directed_graph")
+        const height = graphContainer.clientWidth;
+        yAxisG.attr("transform", "translate(" + (graphContainer.clientWidth * 0.08 + 38) + "," + 0 + ")");
+    });
 
+    // add links
     link = gDraw.append("g")
         .attr("class", "link")
         .selectAll("line")
@@ -93,6 +78,7 @@ function createV4SelectableForceDirectedGraph(graph, parentWidth, parentHeight) 
         .attr("stroke-width", function(d) { return Math.sqrt(d.value); })
         .attr("stroke", function(d){ return "#dff4f5";});
 
+    // add nodes
     node = gDraw.append("g")
         .attr("class", "node")
         .selectAll("circle")
@@ -106,17 +92,11 @@ function createV4SelectableForceDirectedGraph(graph, parentWidth, parentHeight) 
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended));
-
       
     // add titles for mouseover blurbs
-    node.append("title")
-        .text(function(d) { 
-            if ('name' in d)
-                return d.name;
-            else
-                return d.id; 
-        });
+    node.append("title").text(function(d) { return d.name });
 
+    // create simulation
     simulation = d3v4.forceSimulation()
         .force("link", d3v4.forceLink()
                 .id(function(d) { return d.id; })
@@ -176,9 +156,20 @@ function createV4SelectableForceDirectedGraph(graph, parentWidth, parentHeight) 
             d.fy = null;
         }
     }
-
-    return graph;
 };
+
+function createYAxis(scale) {
+    return d3v4.axisLeft(scale)
+    .ticks(10)
+    .tickFormat(function(d) {
+        var yearsAd = Math.floor(2000 - d);
+        if(yearsAd >= 0) {
+            return yearsAd + "";
+        } else {
+            return Math.abs(yearsAd) + " BC"
+        }
+    })
+}
 
 function setSelectedNode(node, allNodes, allLinks) {
     if(selectedNode === node) return;
