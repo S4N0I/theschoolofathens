@@ -54,7 +54,7 @@ function createV4SelectableForceDirectedGraph(graph, parentWidth, parentHeight) 
     .classed('y-axis', true)
     .call(yAxis)
     .attr("transform",
-    "translate(" + 128 + "," + 0 + ")");
+    "translate(" + (parentWidth * 0.08 + 38) + "," + 0 + ")");
 
     var zoom = d3v4.zoom()
     .on('zoom', zoomed);

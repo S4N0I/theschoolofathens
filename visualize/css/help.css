@@ -1,8 +1,14 @@
 .help-container {
     position: absolute;
     top: 30px;
-    right: 64px;
+    right: 8vw;
     z-index: 5000;
+    display: flex;
+}
+
+.help-container a {
+    align-self: center;
+    margin-left: 16px;
 }
 
 #legendHeader {
@@ -72,6 +78,7 @@
     font-size: 16px;
     line-height: 36px;
     cursor: default;
+    display: inline-block;
 }
 
 .help-tip:before {
@@ -99,8 +106,8 @@
     border-radius: 3px;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
     right: -4px;
-    color: #FFF;
-    font-size: 13px;
+    color: #ddd;
+    font-size: 14px;
     line-height: 1.4;
 }
 

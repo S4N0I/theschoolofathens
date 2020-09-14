@@ -1,8 +1,8 @@
 .search-container {
     position: absolute;
     top: 30px;
-    left: 96px;
-    width: 100%;
+    left: calc(8vw + 4px);
+	width: 100%;
 }
 
 input {
