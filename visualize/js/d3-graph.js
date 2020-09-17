@@ -4,8 +4,8 @@
 if (typeof d3v4 == 'undefined')
     d3v4 = d3;
 
-var link = null;
-var node = null;
+var links = null;
+var nodes = null;
 var yAxisG = null;
 var simulation = null;
 var selectedNode = null;
@@ -30,8 +30,9 @@ function createD3Graph(graph, parentWidth, parentHeight) {
     .attr('height', '100%')
 
     // add graph
-    var graphWidthEstimate = 11600
-    var initScale = Math.max(parentWidth, parentHeight) / (graphWidthEstimate * 1.2);
+    // give graph a reasonable size and position for different screen sizes / aspect ratios using shallow trickery
+    var reasonableScreenSizeScaleMultiple = 11600 * 1.2
+    var initScale = Math.max(parentWidth, parentHeight) / (reasonableScreenSizeScaleMultiple);
     var initXTransform = parentWidth / 2 - initScale * 800;
     var initYTransform = parentHeight / 3;
     var gDraw = gMain.append('g')
@@ -47,8 +48,7 @@ function createD3Graph(graph, parentWidth, parentHeight) {
     yAxisG = gMain.append("g")
     .classed('y-axis', true)
     .call(yAxis)
-    .attr("transform",
-    "translate(" + (parentWidth * 0.08 + 38) + "," + 0 + ")");
+    .attr("transform", "translate(" + (parentWidth * 0.08 + 38) + "," + 0 + ")");
 
     // Add zoom callback
     var zoom = d3v4.zoom()
@@ -65,12 +65,11 @@ function createD3Graph(graph, parentWidth, parentHeight) {
     // Add resize callback
     window.addEventListener('resize', function() {
         var graphContainer = document.getElementById("d3_selectable_force_directed_graph")
-        const height = graphContainer.clientWidth;
         yAxisG.attr("transform", "translate(" + (graphContainer.clientWidth * 0.08 + 38) + "," + 0 + ")");
     });
 
     // add links
-    link = gDraw.append("g")
+    links = gDraw.append("g")
         .attr("class", "link")
         .selectAll("line")
         .data(graph.links)
@@ -79,13 +78,13 @@ function createD3Graph(graph, parentWidth, parentHeight) {
         .attr("stroke", function(d){ return "#dff4f5";});
 
     // add nodes
-    node = gDraw.append("g")
+    nodes = gDraw.append("g")
         .attr("class", "node")
         .selectAll("circle")
         .data(graph.nodes)
         .enter().append("circle")
         .attr("r", function(d) { 
-                return Math.sqrt(d.score*3.14);
+                return Math.sqrt(d.score * 50000 * 3.14);
         })
         .attr("fill", function(d) { return "#1f77b4";})
         .call(d3v4.drag()
@@ -94,16 +93,13 @@ function createD3Graph(graph, parentWidth, parentHeight) {
         .on("end", dragended));
       
     // add titles for mouseover blurbs
-    node.append("title").text(function(d) { return d.name });
+    nodes.append("title").text(function(d) { return d.name });
 
     // create simulation
     simulation = d3v4.forceSimulation()
         .force("link", d3v4.forceLink()
                 .id(function(d) { return d.id; })
-                .distance(function(d) { 
-                    return 100;
-                })
-              )
+                .distance(function(d) { return 100;}))
         .force("charge", d3v4.forceManyBody().distanceMin(100).strength(-2000))
         .force("center", d3v4.forceCenter(parentWidth / 2, parentHeight / 2))
         .force("x", d3v4.forceX(parentWidth/2))
@@ -119,24 +115,24 @@ function createD3Graph(graph, parentWidth, parentHeight) {
     function ticked() {
         // update node and line positions at every step of 
         // the force simulation
-        link.attr("x1", function(d) { return d.source.x; })
+        links.attr("x1", function(d) { return d.source.x; })
             .attr("y1", function(d) { return d.source.y; })
             .attr("x2", function(d) { return d.target.x; })
             .attr("y2", function(d) { return d.target.y; });
 
-        node.attr("cx", function(d) { return d.x; })
+        nodes.attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; });
     }
 
     rect.on('click', () => {
-        resetSelectedNode(node, link);
+        resetSelectedNode(nodes, links);
     });
 
 
     function dragstarted(d) {
         if (!d3v4.event.active) simulation.alphaTarget(0.9).restart();
 
-        setSelectedNode(d, node, link);
+        setSelectedNode(d, nodes, links);
 
         d.fx = d.x;
         d.fy = d.y;
@@ -149,7 +145,9 @@ function createD3Graph(graph, parentWidth, parentHeight) {
 
     function dragended(d) {
         if (!d3v4.event.active) simulation.alphaTarget(0);
+
         d.fx = null;
+
         if(clippingToTimeline) {
             d.fy = d.savedFy;
         } else {
@@ -208,7 +206,7 @@ function clipNodesToTimeline(shouldClip) {
         clippingToTimeline = true;
         yAxisG.attr("opacity", 1)
         simulation.stop();
-        node.each(function(d) {
+        nodes.each(function(d) {
             d.fy = d.savedFy;
         })
         simulation.alpha(1).restart();
@@ -216,7 +214,7 @@ function clipNodesToTimeline(shouldClip) {
         clippingToTimeline = false;
         yAxisG.attr("opacity", 0)
         simulation.stop();
-        node.each(function(d) { 
+        nodes.each(function(d) { 
             d.fy = null;
         })
         simulation.alpha(1).restart();
@@ -230,11 +228,11 @@ function onClickClipToTimeline() {
 
 function searchByName() {
     var searchTerm = document.getElementById("search").value;
-    if(searchTerm.length == 0) {
-        node.classed("search-match", false);
-        return;
-    };
-    node.classed("search-match", function(n){
-        return n.name.toLowerCase().includes(searchTerm.toLowerCase());
+    nodes.classed("search-match", function(n){
+        if(searchTerm.length == 0) {
+            return false;
+        } else {
+            return n.name.toLowerCase().includes(searchTerm.toLowerCase());
+        } 
     });
 }

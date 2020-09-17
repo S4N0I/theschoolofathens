@@ -2,7 +2,6 @@ import json
 import sys
 import networkx as nx
 from networkx.readwrite import json_graph
-import matplotlib.pyplot as plt
 
 
 def usage():

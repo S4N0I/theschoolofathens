@@ -13,7 +13,7 @@
     <link rel='stylesheet' href='css/help.css'>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="js/graph-data.js"></script>
-    <script src="js/util.js"></script>
+    <script src="js/init.js"></script>
     <script src="js/d3-graph.js"></script>
     <script src="https://d3js.org/d3-selection-multi.v0.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -22,12 +22,12 @@
 
 <body>
 
-<div id="container">
-    <div id="d3_selectable_force_directed_graph">
-        <svg/>
-    </div>
+<!-- D3 graph -->
+<div id="d3_selectable_force_directed_graph">
+    <svg/>
 </div>
 
+<!-- "Clip to timeline" switch -->
 <div class="switch-container">
   <label class="switch">
     <input id="clipToTimelineCheckbox" type="checkbox" checked  onclick="onClickClipToTimeline()">
@@ -41,6 +41,7 @@
     <input id="search" type="search" placeholder="Search" onkeyup="searchByName()">
 </div>
 
+<!-- Help & About -->
 <div class="help-container">
     <div class="help-tip">
         <div>
@@ -76,10 +77,10 @@
             </div>
         </div>
     </div>
-    <a>About</a>
+    <a href="about.html">About</a>
 </div>
 
-<!-- Modal Structure -->
+<!-- Bottom sheet -->
 <div id="bottom_sheet" class="modal bottom-sheet modal-fixed-footer">
     <div id="modalContent" class="modal-content">
         <img id="philosopherImg">
@@ -106,11 +107,10 @@
     );
 </script>
 
+<!-- Graph initialization -->
 <script>
+    initGraph(graph)
     var graphContainer = document.getElementById("d3_selectable_force_directed_graph")
-    for (var i = 0; i < graph.nodes.length; i++) {
-        initNode(graph.nodes[i], graphContainer.clientWidth, graphContainer.clientHeight)
-    }
     createD3Graph(graph, graphContainer.clientWidth, graphContainer.clientHeight);
 </script>
 </body>

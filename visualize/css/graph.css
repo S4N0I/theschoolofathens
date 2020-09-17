@@ -3,7 +3,7 @@ body {
     overflow-y: hidden;
 }
 
-#d3_selectable_force_directed_graph .node {
+.node {
     stroke: #fff;
     stroke-width: 1.5px;
 }
@@ -26,11 +26,6 @@ body {
 
 .link .influenced-by {
     stroke: #2af806;
-}
-
-#container {
-    height: 100vh;
-    position: relative;
 }
 
 #d3_selectable_force_directed_graph {
