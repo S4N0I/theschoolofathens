@@ -1,6 +1,6 @@
 .help-container {
     position: absolute;
-    top: 30px;
+    top: 4vh;
     right: 8vw;
     z-index: 5000;
     display: flex;

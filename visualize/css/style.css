@@ -1,3 +1,22 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    position: relative
+}
+
+html, body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+}
+
 .graph-background {
     fill: #fcfcfc;
 }
@@ -5,7 +24,7 @@
 .y-axis text {
     fill: #555;
     font-family: "Helvetica", "Arial", sans-serif;
-    font-size : 16px
+    font-size : 14px
 }
 
 .y-axis line {
@@ -41,7 +60,7 @@
 }
 
 #philosopherDescription {
-    max-width: 60%;
+    max-width: 80%;
 }
 
 .modal-footer {

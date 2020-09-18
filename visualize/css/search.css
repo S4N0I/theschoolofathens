@@ -1,6 +1,6 @@
 .search-container {
     position: absolute;
-    top: 30px;
+    top: 4vh;
     left: calc(8vw + 4px);
 	width: 100%;
 }
