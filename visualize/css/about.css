@@ -9,15 +9,24 @@ body {
     color: #555;
 }
 
-body p {
+p {
     margin: 1em 0;
+    padding: 0 6vw;
+}
+
+h1, h2, h3, ul {
+    padding: 0 6vw;
+}
+
+ul {
+    padding: 0 8vw;
 }
 
 main {
     background-color: #fcfcfccc;
     margin: 5em auto 0 auto;
-    max-width: 60vw;
-    padding: 2em 5em;
+    max-width: 80vw;
+    padding: 2em 5vw;
 }
   
 h2 {
