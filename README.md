@@ -1,5 +1,7 @@
 # About theschoolofathens
 
+The visualization is live [here](https://s4n0i.github.io/schoolofathens/).
+
 ## Why?
 Philosophers don't think in isolation. They draw from their peers' work to make their own contribution, creating a web of ideas. The goal of this project was to make this visible using data analysis and visualization techniques.
 
